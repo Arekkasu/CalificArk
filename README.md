@@ -1,8 +1,9 @@
 # 📚 El Califacainador (CalificArk)
 
-**El Califacainador**, también conocido como **CalificArk**, es una aplicación web pensada para empoderar a los estudiantes universitarios, permitiéndoles consultar, calificar y comentar sobre los profesores de su universidad.
+Este aplicativo web propone permitir que
+los estudiantes puedan tener de manera
+libre su calificacion de profesores, ademas se podra observar de manera abierta las calificaciones de profesores.
 
-Actualmente, el acceso a esta información no es público y requiere solicitudes en jefatura. Este proyecto busca cambiar eso, haciendo más accesible y transparente la evaluación docente.
 
 > 🚧 Actualmente en desarrollo: esta es la parte del backend. El frontend será implementado próximamente.
 
