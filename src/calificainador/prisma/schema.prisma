@@ -1,0 +1,38 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model review {
+  id           BigInt   @id(map: "review_pk") @default(autoincrement())
+  student      BigInt
+  subject      BigInt
+  review       Decimal  @db.Decimal(2, 1)
+  date_comment DateTime @db.Timestamptz(6)
+  comment      String?
+  students     students @relation(fields: [student], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "student___fk")
+  subjects     subjects @relation(fields: [subject], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "subject___fk")
+}
+
+model students {
+  id             BigInt   @id(map: "students_pk") @default(autoincrement())
+  email          String   @unique(map: "students_pk_2") @db.VarChar(254)
+  username       String   @unique(map: "students_unique") @db.VarChar(50)
+  password       String   @db.VarChar(50)
+  email_verified Boolean
+  review         review[]
+}
+
+model subjects {
+  id           BigInt   @id(map: "subjects_pk") @default(autoincrement())
+  name         String
+  teacher_name String   @db.VarChar(50)
+  code         BigInt   @unique(map: "subjects_pk_2")
+  fecha        Int
+  corte        Int
+  review       review[]
+}
