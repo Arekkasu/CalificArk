@@ -9,7 +9,7 @@ export interface EmailOptions {
   htmlBody: string;
 }
 
-export class EmailSevice {
+export class EmailService {
   private transporter: Transporter;
   constructor(
     mailerService: string,

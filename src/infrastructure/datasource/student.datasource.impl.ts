@@ -5,8 +5,27 @@ import {
   isRegisteredResponse,
 } from "../../domain/datasources/student.datasource";
 import { RegisterStudentDto } from "../../domain/dtos/register-student.dto";
+import { validateEmail } from "../../utils/validators";
 
 export class StudentDataSourceImpl implements StudentDataSource {
+  async setVerified(email: string): Promise<[any, string?]> {
+    if (!email) return [null, "Email is required"];
+    try {
+      await prisma.students.update({
+        where: {
+          email,
+        },
+        data: {
+          email_verified: true,
+        },
+      });
+
+      return [null, "Email verified successfully"];
+    } catch (e) {
+      return [e, "Error verifying email"];
+    }
+  }
+
   async isRegistered(
     options: isRegistereredOptions,
   ): Promise<isRegisteredResponse> {
@@ -16,11 +35,17 @@ export class StudentDataSourceImpl implements StudentDataSource {
         where: {
           OR: [{ email }, { username }],
         },
+        select: {
+          email: true,
+          username: true,
+          email_verified: true,
+        },
       });
 
       return {
         existEmail: exist?.email === email,
         existUsername: exist?.username === username,
+        existEmailVerified: exist?.email_verified,
       };
     } catch (e) {
       console.log(e);
@@ -36,13 +61,17 @@ export class StudentDataSourceImpl implements StudentDataSource {
     const { email, username, password } = registerStudentDto.getAllData();
 
     try {
-      const { existEmail, existUsername } = await this.isRegistered({
-        email,
-        username,
-      });
+      const { existEmail, existUsername, existEmailVerified } =
+        await this.isRegistered({
+          email,
+          username,
+        });
 
-      if (existEmail) {
-        return "The email Exist";
+      if (existEmail && existEmailVerified) {
+        return "The account already exists";
+      }
+      if (existEmail && !existEmailVerified) {
+        return "You need to verify your email, please check your email again";
       }
       if (existUsername) {
         return "The Username Exist";
@@ -56,6 +85,7 @@ export class StudentDataSourceImpl implements StudentDataSource {
           email_verified: false,
         },
       });
+
       return "Student Created Succesfully. Please Verify Your Email";
     } catch (e) {
       console.log(e);

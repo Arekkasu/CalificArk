@@ -11,4 +11,5 @@ export abstract class StudentRepository {
   abstract isRegistered(
     options: isRegistereredOptions,
   ): Promise<isRegisteredResponse>;
+  abstract setVerified(email: string): Promise<[any, string?]>;
 }

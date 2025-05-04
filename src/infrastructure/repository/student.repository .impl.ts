@@ -8,6 +8,9 @@ import { StudentRepository } from "../../domain/repositories/student.repository"
 
 export class StudentRepositoryImpl implements StudentRepository {
   constructor(private readonly studentDatasource: StudentDataSource) {}
+  setVerified(email: string): Promise<[any, string?]> {
+    return this.studentDatasource.setVerified(email);
+  }
   isRegistered(options: isRegistereredOptions): Promise<isRegisteredResponse> {
     throw new Error("Method not implemented.");
   }

@@ -4,7 +4,7 @@ import envs from "./envs";
 const JWT_SECRET = envs.JWT_SECRET;
 
 export class JwtAdapter {
-  static async generateToken(payload: any, expiresIn: string = "1h") {
+  static async generateToken(payload: any, expiresIn: number = 3600) {
     return new Promise((resolve) => {
       jwt.sign(payload, JWT_SECRET, { expiresIn: expiresIn }, (err, token) => {
         if (err) return resolve(null);

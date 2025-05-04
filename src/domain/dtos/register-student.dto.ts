@@ -1,5 +1,6 @@
 import { Public } from "@prisma/client/runtime/library";
 import { bcryptAdapter } from "../../config/bcrypt.adapter";
+import { validateEmail, validatePassword } from "../../utils/validators";
 
 export class RegisterStudentDto {
   private constructor(
@@ -14,6 +15,12 @@ export class RegisterStudentDto {
     const { username, email, password } = props;
     if (!username || !email || !password) {
       return ["Hay campos Faltantes", undefined];
+    }
+    if (!validateEmail(email)) {
+      return ["Invalid Email", undefined];
+    }
+    if (!validatePassword(password)) {
+      return ["Invalid Password", undefined];
     }
     const hashedPassword = bcryptAdapter.hash(password);
     return [
