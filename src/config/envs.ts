@@ -9,6 +9,7 @@ const envs = {
   PASSWORD_MAIL: get("PASSWORD_MAIL").required().asString(),
   JWT_SECRET: get("JWT_SECRET").required().asString(),
   WEB_URL: get("WEB_URL").required().asString(),
+  SECRET_SESSION_TOKEN: get("SECRET_SESSION_TOKEN").required().asString(),
 };
 
 export default envs;

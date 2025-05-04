@@ -5,9 +5,24 @@ import {
   isRegisteredResponse,
 } from "../../domain/datasources/student.datasource";
 import { RegisterStudentDto } from "../../domain/dtos/register-student.dto";
+import { StudentEntity } from "../../domain/entities/student.entity";
 import { validateEmail } from "../../utils/validators";
 
 export class StudentDataSourceImpl implements StudentDataSource {
+  async getUser(username: string): Promise<[Error?, StudentEntity?]> {
+    try {
+      const user = await prisma.students.findUnique({
+        where: {
+          username: username,
+        },
+      });
+      if (!user) return [new Error("User not found"), undefined];
+      const studentEntity = StudentEntity.fromObjectUser(user);
+      return [undefined, studentEntity];
+    } catch (error) {
+      return [error as Error, undefined];
+    }
+  }
   async setVerified(email: string): Promise<[any, string?]> {
     if (!email) return [null, "Email is required"];
     try {
