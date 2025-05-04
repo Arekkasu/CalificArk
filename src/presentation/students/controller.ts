@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { StudentRepositoryImpl } from "../../infrastructure/repository/student.repository .impl";
+import { StudentRepositoryImpl } from "../../infrastructure/repository/student.repository.impl";
 import { RegisterStudentDto } from "../../domain/dtos/register-student.dto";
 import { AuthService } from "../service/auth.service";
 
@@ -40,7 +40,6 @@ export class StudentController {
         }
         return res.status(201).json({
           error,
-          studentDto,
           response,
         });
       })

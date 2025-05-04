@@ -1,9 +1,9 @@
 import { Public } from "@prisma/client/runtime/library";
 import envs from "../../config/envs";
 import { JwtAdapter } from "../../config/jwt.adapter";
-import { StudentRepositoryImpl } from "../../infrastructure/repository/student.repository .impl";
+import { StudentRepositoryImpl } from "../../infrastructure/repository/student.repository.impl";
 import { EmailService } from "./email.service";
-
+import { bcryptAdapter } from "../../config/bcrypt.adapter";
 export class AuthService {
   constructor(
     private readonly emailService: EmailService,
@@ -16,8 +16,11 @@ export class AuthService {
       throw new Error("Failed to generate token");
     }
 
-    const linkVerify = `${envs.WEB_URL}/auth/verify/${token}`;
+    // EN caso de deploy
+    //const linkVerify = `https://21d0-152-204-245-184.ngrok-free.app/api/auth/verify/${token}`;
 
+    //EN local
+    const linkVerify = `http://${envs.WEB_URL}/auth/verify/${token}`;
     const htmlMessage = `
       <h1>Verifica tu email</h1>
       <p>Por favor, haz clic en el siguiente enlace para verificar tu dirección de correo electrónico:</p>
@@ -47,5 +50,33 @@ export class AuthService {
       return error;
     }
     return success;
+  };
+
+  public login = async (username: string, password: string): Promise<any> => {
+    if (!username) {
+      throw "Username is required";
+    }
+    if (!password) {
+      throw "Password is required";
+    }
+
+    const [error, user] = await this.studentRepository.getUser(username);
+    if (!user) {
+      throw "User not found";
+    }
+    if (!user?.email_verified) {
+      this.sendEmailVerification(user?.email);
+      throw "Email not verified, Check your email";
+    }
+
+    if (error instanceof Error) {
+      throw error;
+    }
+
+    const isMatch = bcryptAdapter.compare(password, user.password);
+    if (!isMatch) {
+      throw "Invalid password";
+    }
+    return user.username;
   };
 }

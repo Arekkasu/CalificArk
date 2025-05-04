@@ -3,9 +3,9 @@ import { EmailService } from "../service/email.service";
 import envs from "../../config/envs";
 import { AuthService } from "../service/auth.service";
 import { AuthController } from "./controller";
-import { StudentRepositoryImpl } from "../../infrastructure/repository/student.repository .impl";
+import { StudentRepositoryImpl } from "../../infrastructure/repository/student.repository.impl";
 import { StudentDataSourceImpl } from "../../infrastructure/datasource/student.datasource.impl";
-
+import { AuthMiddleware } from "../middlewares/auth.middleware";
 export class AuthRoutes {
   static routes(): Router {
     const router = Router();
@@ -20,6 +20,12 @@ export class AuthRoutes {
     const authController = new AuthController(authService);
 
     router.get("/verify/:token", authController.validateEmail);
+    router.post("/login", authController.login);
+    // router.get(
+    //   "/check",
+    //   [AuthMiddleware.sessionCheck],
+    //   authController.checkingSession,
+    // );
     return router;
   }
 }

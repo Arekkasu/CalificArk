@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { StudentController } from "./controller";
 import { StudentDataSourceImpl } from "../../infrastructure/datasource/student.datasource.impl";
-import { StudentRepositoryImpl } from "../../infrastructure/repository/student.repository .impl";
+import { StudentRepositoryImpl } from "../../infrastructure/repository/student.repository.impl";
 import envs from "../../config/envs";
 import { AuthService } from "../service/auth.service";
 import { EmailService } from "../service/email.service";
