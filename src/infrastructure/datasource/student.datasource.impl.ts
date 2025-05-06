@@ -16,6 +16,7 @@ export class StudentDataSourceImpl implements StudentDataSource {
           username: username,
         },
       });
+      console.log(user);
       if (!user) return [new Error("User not found"), undefined];
       const studentEntity = StudentEntity.fromObjectUser(user);
       return [undefined, studentEntity];

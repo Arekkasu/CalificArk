@@ -25,7 +25,7 @@ export class StudentController {
       .registerStudent(studentDto!)
       .then((response) => {
         const { email } = studentDto!.getAllData();
-        this.authService.sendEmailVerification(email);
+
         if (response === "The account already exists") {
           return res.status(409).json({ error: response });
         }
@@ -33,11 +33,13 @@ export class StudentController {
           response ===
           "You need to verify your email, please check your email again"
         ) {
+          this.authService.sendEmailVerification(email);
           return res.status(403).json({ error: response });
         }
         if (response === "The Username Exist") {
           return res.status(409).json({ error: response });
         }
+        this.authService.sendEmailVerification(email);
         return res.status(201).json({
           error,
           response,

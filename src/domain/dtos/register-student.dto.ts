@@ -13,6 +13,7 @@ export class RegisterStudentDto {
     [key: string]: any;
   }): [string?, RegisterStudentDto?] {
     const { username, email, password } = props;
+
     if (!username || !email || !password) {
       return ["Hay campos Faltantes", undefined];
     }
@@ -26,7 +27,14 @@ export class RegisterStudentDto {
     return [
       undefined,
       //ESTE AL FINAL SE ENVIA AL ORM
-      new RegisterStudentDto(username, email, hashedPassword),
+      // los usuarios y los email van estar en minusculas
+      // para que este registrado en la base de datos
+      // y mas normalizados
+      new RegisterStudentDto(
+        username.toLowerCase(),
+        email.toLowerCase(),
+        hashedPassword,
+      ),
     ];
   }
 
