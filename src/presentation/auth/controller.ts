@@ -29,13 +29,14 @@ export class AuthController {
       .catch((error) => {
         res.status(400).json({
           message: "Invalid credentials",
+          error,
         });
       });
   };
 
-  // checkingSession = (req: Request, res: Response) => {
-  //   res
-  //     .status(200)
-  //     .json({ message: "Session is valid", user: req.session.user });
-  // };
+  checkingSession = (req: Request, res: Response) => {
+    res
+      .status(200)
+      .json({ message: "Session is valid", user: req.session.user });
+  };
 }

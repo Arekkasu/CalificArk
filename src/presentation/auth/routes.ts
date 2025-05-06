@@ -21,11 +21,11 @@ export class AuthRoutes {
 
     router.get("/verify/:token", authController.validateEmail);
     router.post("/login", authController.login);
-    // router.get(
-    //   "/check",
-    //   [AuthMiddleware.sessionCheck],
-    //   authController.checkingSession,
-    // );
+    router.get(
+      "/check",
+      [AuthMiddleware.sessionCheck],
+      authController.checkingSession,
+    );
     return router;
   }
 }
